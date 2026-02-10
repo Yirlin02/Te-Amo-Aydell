@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Para ti 💜</title>
+
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --card-bg: rgba(255,255,255,0.88);
+      --shadow: 0 14px 40px rgba(0,0,0,0.25);
+      --text: #2a1f2d;
+      --btn1:#ff4f8b;
+      --btn2:#ff2f73;
+    }
+
+    *{ box-sizing: border-box; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: "Playfair Display", serif;
+      color: var(--text);
+      background-image: url("background.png");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    /* ===== Intro (Sobre) ===== */
+    .intro{
+      position: fixed;
+      inset: 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 26px 16px;
+      background: rgba(0,0,0,0.18);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+    }
+
+    .introCard{
+      width: min(520px, 100%);
+      background: rgba(255,255,255,0.88);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 22px 18px 18px;
+      text-align:center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .introTitle{
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(44px, 8vw, 64px);
+      margin: 4px 0 8px;
+      color:#3a2242;
+    }
+
+    .introSub{
+      margin: 0 0 14px;
+      opacity: .9;
+      font-size: 15px;
+    }
+
+    .timerRow{
+      display:flex;
+      gap: 10px;
+      justify-content:center;
+      align-items:center;
+      margin: 10px 0 14px;
+      flex-wrap: wrap;
+    }
+
+    .chip{
+      background: rgba(255,255,255,0.8);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 999px;
+      padding: 10px 14px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+      font-size: 14px;
+    }
+
+    .chip strong{
+      font-size: 18px;
+      margin-left: 6px;
+    }
+
+    /* Sobre */
+    .envelopeWrap{
+      display:flex;
+      justify-content:center;
+      margin: 10px 0 12px;
+    }
+
+    .envelope{
+      width: 280px;
+      height: 180px;
+      position: relative;
+      transform: translateZ(0);
+    }
+
+    .envBack{
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(245,245,245,0.9));
+      border-radius: 18px;
+      box-shadow: 0 18px 38px rgba(0,0,0,0.18);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .envBottom{
+      position:absolute; left:0; right:0; bottom:0;
+      height: 60%;
+      background: rgba(255,255,255,0.95);
+      border-bottom-left-radius: 18px;
+      border-bottom-right-radius: 18px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .envFlap{
+      position:absolute; left:0; right:0; top:0;
+      height: 60%;
+      background: rgba(255,255,255,0.95);
+      transform-origin: top center;
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: transform .6s ease;
+    }
+
+    .seal{
+      position:absolute;
+      left:50%; top:50%;
+      transform: translate(-50%, -50%);
+      width: 54px; height: 54px;
+      border-radius: 999px;
+      background: radial-gradient(circle at top, rgba(255,255,255,0.5), rgba(255,79,139,0.95));
+      box-shadow: 0 10px 22px rgba(255,79,139,0.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 22px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .letterPeek{
+      position:absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      height: 90px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+      transform: translateY(14px);
+      transition: transform .6s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 10px;
+      gap: 8px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .letterPeek span{
+      font-family: "Great Vibes", cursive;
+      font-size: 34px;
+      color:#3a2242;
+    }
+
+    .open .envFlap{ transform: rotateX(160deg); }
+    .open .letterPeek{ transform: translateY(-10px); }
+
+    .introBtn{
+      border:none;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-size: 16px;
+      cursor:pointer;
+      color:white;
+      background: linear-gradient(135deg, var(--btn1), var(--btn2));
+      box-shadow: 0 10px 22px rgba(255,79,139,0.45);
+      transition: transform .08s ease, filter .2s ease;
+    }
+    .introBtn:active{ transform: scale(.98); }
+    .introBtn:disabled{
+      opacity: .5;
+      cursor:not-allowed;
+      filter: grayscale(0.2);
+    }
+
+    .miniNote{
+      margin-top: 10px;
+      font-size: 13px;
+      opacity: .85;
+    }
+
+    /* ===== Contenido principal ===== */
+    .overlay{
+      min-height:100vh;
+      background: rgba(0,0,0,0.15);
+      display:flex;
+      justify-content:center;
+      padding: 30px 15px;
+      overflow:hidden;
+    }
+
+    .container{
+      max-width: 900px;
+      width: 100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1{
+      margin: 10px 0 0;
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(48px, 8vw, 80px);
+      color:#2b1a2f;
+      text-align:center;
+      text-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+
+    .card{
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 22px 20px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      backdrop-filter: blur(6px);
+    }
+
+    .card h2{
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(30px, 6vw, 44px);
+      text-align:center;
+      margin: 0 0 10px;
+      color:#3a2242;
+    }
+
+    .card p{
+      font-style: italic;
+      text-align: center;
+      font-size: clamp(16px, 3.6vw, 20px);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      margin: 0;
+    }
+
+    .actions{
+      text-align:center;
+      margin-top: 6px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 10px;
+    }
+
+    #btnLove{
+      background: linear-gradient(135deg, var(--btn1), var(--btn2));
+      border:none;
+      color:white;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-size: 17px;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(255,79,139,0.45);
+      transition: transform .08s ease, filter .2s ease;
+    }
+    #btnLove:hover{ filter: brightness(1.05); }
+    #btnLove:active{ transform: scale(0.97); }
+
+    .loveText{
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(28px, 6vw, 46px);
+      color: white;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .3s ease, transform .3s ease;
+      text-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    }
+    .loveText.show{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Corazones flotando */
+    .float-heart{
+      position: fixed;
+      left: 50%;
+      top: 110vh;
+      pointer-events: none;
+      z-index: 1;
+      will-change: transform, opacity;
+      filter: drop-shadow(0 8px 14px rgba(0,0,0,.18));
+      animation: rise 1.6s ease forwards;
+      opacity: 0.95;
+    }
+    @keyframes rise{
+      0%   { transform: translate(-50%, 0) scale(1) rotate(0deg); opacity: .95; }
+      100% { transform: translate(calc(-50% + var(--dx)), -140vh) scale(var(--s)) rotate(var(--r)); opacity: 0; }
+    }
+
+    footer{
+      margin-top: 6px;
+      font-size: 13px;
+      color: white;
+      opacity: 0.85;
+      text-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    }
+
+    .hidden{ display:none; }
+  </style>
+</head>
+
+<body>
+
+  <!-- INTRO: SOBRE + TIMER -->
+  <section class="intro" id="intro">
+    <div class="introCard">
+      <div class="introTitle">Para ti 💌</div>
+      <p class="introSub">Hay algo que quiero que leas… con calma.</p>
+
+      <div class="timerRow">
+        <div class="chip">⏳ Abre en: <strong id="countdown">07</strong>s</div>
+        <div class="chip">💜 Toca “Abrir” cuando esté listo</div>
+      </div>
+
+      <div class="envelopeWrap">
+        <div class="envelope" id="envelope">
+          <div class="envBack"></div>
+          <div class="envBottom"></div>
+          <div class="envFlap"></div>
+          <div class="letterPeek"><span>Te amo</span> 💜</div>
+          <div class="seal">💗</div>
+        </div>
+      </div>
+
+      <button class="introBtn" id="openBtn" disabled>Abrir 💌</button>
+      <div class="miniNote">*(En iPhone, la música puede requerir un toque: “Abrir” cuenta como toque)*</div>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="overlay hidden" id="main">
+    <div class="container">
+
+      <h1>Para ti 💌</h1>
+
+      <div class="card">
+        <h2>💌 Feliz Día de San Valentín mi amor</h2>
+        <p>Te he preparado este detalle con mucha atención y cariño, espero lo disfrutes.</p>
+      </div>
+
+      <div class="card">
+        <h2>💖 ¿Por qué te amo?</h2>
+        <p>
+Te amo, me haces sentir tantas cosas maravillosas, me haces sentir tan feliz, me haces sentir que soy un hombre muy afortunado al haber llegado y conocerte tal y como eres.
+
+Me siento tan especial al despertar cada día y saber que eres mi novia, me siento muy orgulloso de ti porque eres maravillosa, inteligente, una diva y una diosa ante mis ojos.
+
+Haces palpitar mi corazón cuando pienso en ti y no puedo parar de sentir este inmenso amor por ti.
+
+Eres mi bebé mi niña hermosa y siempre quiero que sepas que serás la número 1 en mi corazón.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>✨ Cuando te conocí</h2>
+        <p>
+Cuando te conocí realmente tu no me conocías a mi y pues tampoco me imagine que esa amistad del principio llegaría tan lejos y mucho menos a que nos conoceríamos de tan cerca como ahora, pero al parecer la vida mil vueltas desde esa primera instancia que te confesé quien realmente soy comence a abrirme mas contigo, comencé a conectar mucho mas contigo, me sentía super bien y feliz al hablar contigo, todo en mi mente comenzó a girar entorno a ti y las cosas que sucedian dentro de mi corazón y pues con poco tiempo me enamore de ti, y me enamore mas de allá de solo lo físico me enamore de ti de una forma diferente, me enamore de tu personalidad, de tus virtudes y tus defectos me pareces perfecta me pareces alguien que callo del cielo para llenar todo mi mundo de colores y no paro pensar en el dia que nos veamos por primera ves, lo quiero todo contigo mi niña hermosa <3
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>🌱 Por el futuro</h2>
+        <p>
+se que un dia todos nuestro sueños y deseos se harán y se que un dia todas las cosas que nos planeamos y deseamos serán realidad trabajemos juntos para siempre salir adelante y siempre demos lo mejor de nosotros para ser felices el uno con el otro
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>🌙 En los días difíciles</h2>
+        <p>
+Quiero que sepas que no solo estaré contigo
+en los momentos felices,
+también en los días difíciles,
+cuando las cosas no salgan como esperamos.
+No estás sola, nunca lo estarás.
+Siempre tendrás mi mano, mi apoyo
+y mi amor incondicional.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>💍 Mi promesa</h2>
+        <p>
+Te prometo cuidarte, respetarte y amarte.
+Prometo crecer contigo, aprender contigo
+y construir algo hermoso a tu lado.
+No prometo perfección,
+pero sí amor sincero
+y ganas infinitas de estar contigo.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>❤️‍🔥 Mi verdad</h2>
+        <p>
+Mi verdad es simple y a la vez inmensa:
+te amo con todo lo que soy.
+No a medias, no con dudas,
+te amo con el corazón abierto,
+con el alma expuesta
+y con la certeza de que contigo
+quiero construirlo todo.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>🔐 Solo tú</h2>
+        <p>
+No necesito buscar en ningún otro lugar,
+porque en ti encontré todo.
+Amor, paz, deseo, complicidad.
+Eres mi refugio,
+mi lugar seguro
+y la persona que quiero elegir
+todos los días de mi vida.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>🔥 Mi cuerpo y mi alma</h2>
+        <p>
+Mi cuerpo te desea,
+pero mi alma te pertenece.
+No es solo atracción,
+es conexión,
+es ese fuego que no quema
+pero consume lento
+y me recuerda que contigo
+quiero perderme una y otra vez.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>💞 Mía</h2>
+        <p>
+No en posesión,
+sino en conexión.
+Mía en el sentido
+de mirarnos y entendernos sin hablar.
+Mía porque mi corazón
+reconoce el tuyo
+como su hogar.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>♾️🔥 Hasta el final</h2>
+        <p>
+No es solo que te ame.
+Es que te llevo en la sangre,
+en el pensamiento que vuelve siempre a ti,
+en el latido que se acelera cuando imagino tu nombre.
+
+Te amo con una intensidad que no pide permiso,
+que no sabe esconderse
+y que no quiere irse.
+Te amo cuando sonríes,
+pero también cuando dudas,
+porque incluso en tus silencios
+eres mi lugar seguro.
+
+No te prometo un amor fácil,
+te prometo uno real.
+Uno que se queda,
+uno que resiste,
+uno que elige amarte incluso cuando amar duele.
+
+Si alguna vez dudas,
+si alguna vez el mundo pesa demasiado,
+recuerda esto:
+aquí hay un corazón que late por ti,
+que te elige sin condiciones
+y que no conoce otro destino
+que no seas tú.
+
+No sé amar a medias.
+Y a ti…
+te amo hasta el final.
+        </p>
+      </div>
+
+      <div class="actions">
+        <button id="btnLove">Te amo 💗</button>
+        <div class="loveText" id="loveText">Siempre contigo ✨</div>
+      </div>
+
+      <footer>Hecho con amor.</footer>
+    </div>
+  </div>
+
+  <script>
+    /* ===== Música (global) ===== */
+    const audio = new Audio("as-it-was.mp3");
+    audio.loop = true;
+    audio.volume = 0.35;
+
+    /* ===== Intro Timer + Sobre ===== */
+    const intro = document.getElementById("intro");
+    const main = document.getElementById("main");
+    const openBtn = document.getElementById("openBtn");
+    const countdownEl = document.getElementById("countdown");
+    const envelope = document.getElementById("envelope");
+
+    let seconds = 7; // ⬅️ Cambia el timer aquí
+    countdownEl.textContent = String(seconds).padStart(2, "0");
+
+    const tick = setInterval(() => {
+      seconds--;
+      countdownEl.textContent = String(Math.max(seconds, 0)).padStart(2, "0");
+      if (seconds <= 0) {
+        clearInterval(tick);
+        openBtn.disabled = false;
+        openBtn.textContent = "Abrir 💌";
+      }
+    }, 1000);
+
+    let musicStarted = false;
+
+    openBtn.addEventListener("click", () => {
+      envelope.classList.add("open");
+
+      // 🎵 Iniciar música al abrir
+      if (!musicStarted) {
+        audio.play().catch(() => {});
+        musicStarted = true;
+      }
+
+      setTimeout(() => {
+        intro.style.display = "none";
+        main.classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 650);
+    });
+
+    /* ===== Botón Te amo + corazones + frases ===== */
+    const frases = [
+      "Te amo 💗",
+      "Eres mi todo 💞",
+      "Contigo, siempre ✨",
+      "Mi persona favorita 💜",
+      "Para siempre tú 💍"
+    ];
+
+    const btn = document.getElementById("btnLove");
+    const text = document.getElementById("loveText");
+    let index = 0;
+
+    function heartsBurst(){
+      const hearts = ["💜","💖","💗","💞","💘"];
+      const n = 18;
+      for(let k=0;k<n;k++){
+        const s = document.createElement("span");
+        s.className = "float-heart";
+        s.textContent = hearts[(Math.random()*hearts.length)|0];
+
+        const dx = (-120 + Math.random()*240) + "px";
+        const scale = (0.9 + Math.random()*0.9).toFixed(2);
+        const rot = (-35 + Math.random()*70).toFixed(0) + "deg";
+
+        s.style.setProperty("--dx", dx);
+        s.style.setProperty("--s", scale);
+        s.style.setProperty("--r", rot);
+
+        s.style.left = (10 + Math.random()*80) + "vw";
+        s.style.fontSize = (14 + Math.random()*22) + "px";
+        s.style.animationDuration = (1.2 + Math.random()*0.9).toFixed(2) + "s";
+
+        document.body.appendChild(s);
+        setTimeout(()=> s.remove(), 2200);
+      }
+    }
+
+    btn.addEventListener("click", () => {
+      index = (index + 1) % frases.length;
+      text.textContent = frases[index];
+      text.classList.add("show");
+      setTimeout(() => text.classList.remove("show"), 1500);
+
+      heartsBurst();
+
+      // Si por alguna razón no empezó al abrir (navegador raro), empieza aquí
+      if (!musicStarted) {
+        audio.play().catch(() => {});
+        musicStarted = true;
+      }
+    });
+  </script>
+</body>
+</html>
